@@ -4,7 +4,7 @@
 
   ## Description
 
-   A Note Taker app that can be used to write and save notes. This application features an Express.js back end that can save and retrieve note data from a JSON file. This app is deployed to Heroku https://sleepy-everglades-70941.herokuapp.com/notes
+   A Note Taker app that can be used to write and save notes. This application features an Express.js back end that can save and retrieve note data from a JSON file. This app is deployed to Heroku https://sleepy-everglades-70941.herokuapp.com
   
   This application was created using 
   - Node JS

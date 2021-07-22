@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs')
 const { v4: uuidv4 } = require('uuid');
-const database = require("./db/db")
+let database = require("./db/db.json")
 
 
 //Express Setup
@@ -35,8 +35,6 @@ app.get('/notes', (request, response) => response.sendFile(path.join(__dirname, 
 
 app.get('/api/notes', (request, response) => {
 
-    
-    
     response.json(database)
 
 });
@@ -45,22 +43,18 @@ app.get('/api/notes', (request, response) => {
 
 app.post('/api/notes', (request, response) => {
    
-      
     //Variable for to request only body 
-   
-     let createNote = request.body;
-     let dbPath = path.join(__dirname, "/db/db.json");
-
+    let createNote = request.body;
      // Adds an id to each new note
-
     createNote.id = uuidv4();
 
-    
-
-
-
+    //Push to DB
     database.push(createNote)
 
+
+    //Rewrite db.json
+
+    let dbPath = path.join(__dirname, "/db/db.json");
     fs.writeFile(dbPath, JSON.stringify(database), function (error) {
 
         if (error) {
@@ -74,14 +68,33 @@ app.post('/api/notes', (request, response) => {
 
 
 
+// Delete Notes from the Database
 
 
+app.delete('/api/notes/:id', (request, response) => {
+  // Selected id to filter out
+  let noteId = request.params.id;
+   
+  // filter to exclude note to remove
+  database = database.filter(data => data.id !== noteId);
 
+  // Rewrite db.json
+  
+  let dbPath = path.join(__dirname, "/db/db.json");
 
+  fs.writeFile(dbPath, JSON.stringify(database), function (error) {
 
+    if (error) {
+        return console.log(error);
+    }
+    console.log("Note deleted!");
+});
 
+  // Send response
+  response.json(database);
 
-
+   
+});
 
 
 
